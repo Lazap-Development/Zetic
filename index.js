@@ -1,11 +1,11 @@
 require('v8-compile-cache');
-const electron = require('electron');
-const { ipcMain, Tray, Menu } = require('electron');
+const { BrowserWindow, app, session } = require('electron');
+const { readFileSync, writeFileSync } = require('fs');
+const { ElectronBlocker, fullLists } = require('@cliqz/adblocker-electron');
+const fetch = require('cross-fetch');
 
-const app = electron.app;
-
-app.on('ready', () => {
-	const mainWindow = new electron.BrowserWindow({
+app.on('ready', async () => {
+	const mainWindow = new BrowserWindow({
 		width: 1300,
 		height: 720,
 		minWidth: 1150,
@@ -15,16 +15,30 @@ app.on('ready', () => {
 		show: false,
 		title: 'Zetic',
 		webPreferences: {
-			nodeIntegration: true,
+			nodeIntegration: false,
 			contextIsolation: false,
-			backgroundThrottling: false
+			nodeIntegrationInSubFrames: true,
 		},
 		icon: 'icon.ico',
 	});
 
-    mainWindow.loadFile("src/index.html");
+	const blocker = await ElectronBlocker.fromLists(
+		fetch,
+		fullLists,
+		{
+			enableCompression: true,
+		},
+		{
+			path: 'engine.bin',
+			read: async (...args) => readFileSync(...args),
+			write: async (...args) => writeFileSync(...args),
+		},
+	);
+	blocker.enableBlockingInSession(mainWindow.webContents.session);
+	
+	mainWindow.loadURL("https://music.youtube.com/");
 
-    mainWindow.once('ready-to-show', async () => {
-        mainWindow.show();
-    })
+	mainWindow.once('ready-to-show', async () => {
+		mainWindow.show();
+	})
 });
