@@ -6,19 +6,18 @@ const app = electron.app;
 
 app.on('ready', () => {
 	const mainWindow = new electron.BrowserWindow({
-		width: 1360,
-		height: 630,
+		width: 1300,
+		height: 720,
 		minWidth: 1150,
 		minHeight: 550,
 		resizable: true,
 		frame: false,
 		show: false,
-		title: 'Lazap',
+		title: 'Zetic',
 		webPreferences: {
 			nodeIntegration: true,
 			contextIsolation: false,
-			backgroundThrottling: false,
-			zoomFactor: 0.9,
+			backgroundThrottling: false
 		},
 		icon: 'icon.ico',
 	});
