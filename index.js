@@ -6,8 +6,8 @@ const fetch = require('cross-fetch');
 
 app.on('ready', async () => {
 	const mainWindow = new BrowserWindow({
-		width: 1300,
-		height: 720,
+		width: 1500,
+		height: 800,
 		minWidth: 1150,
 		minHeight: 550,
 		resizable: true,
