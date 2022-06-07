@@ -11,7 +11,7 @@
         const path = require('path')
 
         webview.addEventListener('dom-ready', function () {
-            document.getElementById("load").classList.remove("pulsar");
+            document.getElementById("load").remove();
             webview.insertCSS(fs.readFileSync(path.join(__dirname, 'css/style.css'), 'utf8'))
         });
 

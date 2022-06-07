@@ -1,3 +1,7 @@
 html,body{ 
-    background-color: rgb(34, 32, 36) !important;
+
+}
+
+.logo {
+    visibility: hidden;
 }
