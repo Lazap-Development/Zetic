@@ -3,13 +3,9 @@ const { BrowserWindow, app, session } = require('electron');
 const { readFileSync, writeFileSync } = require('fs');
 const { ElectronBlocker, fullLists } = require('@cliqz/adblocker-electron');
 const fetch = require('cross-fetch');
-const express = require('express')
-const expressApp = express()
+const path = require('path');
+const url = require('url');
 
-expressApp.get('/', function (req, res) {
-	res.send('Hello World')
-})
-expressApp.listen(3000)
 
 app.on('ready', async () => {
 	const mainWindow = new BrowserWindow({
@@ -22,9 +18,10 @@ app.on('ready', async () => {
 		show: false,
 		title: 'Zetic',
 		webPreferences: {
-			nodeIntegration: false,
+			nodeIntegration: true,
 			contextIsolation: false,
 			nodeIntegrationInSubFrames: true,
+			webviewTag: true
 		},
 		icon: 'icon.ico',
 	});
@@ -42,8 +39,13 @@ app.on('ready', async () => {
 		},
 	);
 	blocker.enableBlockingInSession(mainWindow.webContents.session);
-	mainWindow.webContents.executeJavaScript(`document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="http:/localhost:3000/src/css/style.css">'`);
-	mainWindow.loadURL("https://music.youtube.com/");
+	
+	mainWindow.setBackgroundColor('#9a7ecc')
+	mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'src/index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
 
 	mainWindow.once('ready-to-show', async () => {
 		mainWindow.show();
