@@ -1,12 +1,19 @@
-<webview id="wv1" src="https://music.youtube.com/" style="display:inline-flex; width:100%; height:100%"></webview>
+<head>
+    <link rel="stylesheet" href="css/default.css">
+</head>
 
-<script>
-    var webview = document.getElementById('wv1');
-    const fs = require('fs')
-    const path = require('path')
+<body>
+    <div id="load" class="pulsar"></div>
+    <webview id="wv1" src="https://music.youtube.com/" style="display:inline-flex; width:100%; height:100%"></webview>
+    <script>
+        var webview = document.getElementById('wv1');
+        const fs = require('fs')
+        const path = require('path')
 
-    webview.addEventListener('dom-ready', function () {
-        webview.insertCSS(fs.readFileSync(path.join(__dirname, 'css/style.css'), 'utf8'))
-    });
+        webview.addEventListener('dom-ready', function () {
+            document.getElementById("load").classList.remove("pulsar");
+            webview.insertCSS(fs.readFileSync(path.join(__dirname, 'css/style.css'), 'utf8'))
+        });
 
-</script>
+    </script>
+</body>

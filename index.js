@@ -1,5 +1,5 @@
 require('v8-compile-cache');
-const { BrowserWindow, app, session } = require('electron');
+const { BrowserWindow, app, session, ipcMain } = require('electron');
 const { readFileSync, writeFileSync } = require('fs');
 const { ElectronBlocker, fullLists } = require('@cliqz/adblocker-electron');
 const fetch = require('cross-fetch');
@@ -39,15 +39,14 @@ app.on('ready', async () => {
 		},
 	);
 	blocker.enableBlockingInSession(mainWindow.webContents.session);
-	
-	mainWindow.setBackgroundColor('#9a7ecc')
-	mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'src/index.html'),
-        protocol: 'file:',
-        slashes: true
-    }))
 
-	mainWindow.once('ready-to-show', async () => {
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'src/index.html'),
+		protocol: 'file:',
+		slashes: true
+	}))
+
+	mainWindow.webContents.on('did-finish-load', () => {
 		mainWindow.show();
 	})
 });
